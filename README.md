@@ -145,6 +145,8 @@
 
 <hr>
 
+<p><strong>(Optional)</strong>: If you have time, you may consider modifying your application to persistently store files (in this lab, we did this locally, but on a full application you would want to use a cloud storage).  You can read more about how to integrate Carrierwave with Amazon S3 <a href="https://github.com/carrierwaveuploader/carrierwave">here</a>, scroll down to "Using Amazon S3". This is optional because the signup for S3 is a bit of a pain, but after that you can start uploading files with persistent storage for free (up to a certain limit).</p>
+
 <h1>Template Samples</h1>
 
 <p><strong>Example of new_friend_msg template:</strong></p>
