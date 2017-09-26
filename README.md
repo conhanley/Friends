@@ -19,19 +19,19 @@
 
 <ol>
 <li>
-<p>In this next step we are going to add a mailer so that our project can send an email every time we add a new friend to our list or delete one.  Switch to a new git branch before going further.  The first step is to set up an initializer with our SMTP settings.  We will use gmail in this example, but you can use another service if you desire.  Within the config/initializers directory, add a new file called <code>setup_mailer.rb</code> and insert the following code:</p>
+<p>In this next step we are going to add a mailer so that our project can send an email every time we add a new friend to our list or delete one.  Switch to a new git branch before going further.  The first step is to set up an initializer with our SMTP settings.  We will use Yahoo Mail (Ymail) in this example, but you can use another service if you desire (Note: Google's security settings may prevent you from using Gmail).  Within the config/initializers directory, add a new file called <code>setup_mailer.rb</code> and insert the following code:</p>
 
 <div class="highlight highlight-ruby"><pre>  <span class="no">ActionMailer</span><span class="o">::</span><span class="no">Base</span><span class="o">.</span><span class="n">smtp_settings</span> <span class="o">=</span> <span class="p">{</span>  
-    <span class="ss">:address</span>              <span class="o">=&gt;</span> <span class="s2">"smtp.gmail.com"</span><span class="p">,</span>  
+    <span class="ss">:address</span>              <span class="o">=&gt;</span> <span class="s2">"smtp.mail.yahoo.com"</span><span class="p">,</span>  
     <span class="ss">:port</span>                 <span class="o">=&gt;</span> <span class="mi">587</span><span class="p">,</span>  
-    <span class="ss">:user_name</span>            <span class="o">=&gt;</span> <span class="s2">"&lt;your username&gt;"</span><span class="p">,</span>  
-    <span class="ss">:password</span>             <span class="o">=&gt;</span> <span class="s2">"&lt;your password&gt;"</span><span class="p">,</span>  
+    <span class="ss">:user_name</span>            <span class="o">=&gt;</span> <span class="s2">"&lt;your Yahoo email address&gt;"</span><span class="p">,</span>  
+    <span class="ss">:password</span>             <span class="o">=&gt;</span> <span class="s2">"&lt;your Yahoo password&gt;"</span><span class="p">,</span>  
     <span class="ss">:authentication</span>       <span class="o">=&gt;</span> <span class="s2">"plain"</span><span class="p">,</span>  
     <span class="ss">:enable_starttls_auto</span> <span class="o">=&gt;</span> <span class="kp">true</span>  
   <span class="p">}</span>
 </pre></div>
 
-<p>Replace <code>&lt;your username&gt;</code> with your gmail username, and <code>&lt;your password&gt;</code> with your gmail password.</p>
+<p>Replace <code>&lt;your username&gt;</code> with your Ymail username, and <code>&lt;your password&gt;</code> with your Ymail password.</p>
 </li>
 <li>
 <p>Now we want to create a mailer we can use to handle the business of sending mail.  We can create a basic mailer with the following code:</p>
@@ -67,7 +67,7 @@
 </li>
 <li><p>Now time for a little testing.  Start up the server (if it's already running you need to restart to get the initializer file to be included) and add a new friend, but be sure to use your email. (Please do not spam anyone during this lab.)  Look at the server output (same window as <code>rails server</code> is running in) to see the email was sent.  Now delete that friend and verify the person was notified as well.  Merge all this back to the master branch and have a TA verify this and do the appropriate check-off.</p></li>
 <li>
-<p>You may have noticed that your email did not send ... oh dear. In order to remedy this, we will use the <a href="https://github.com/ryanb/letter_opener">letter opener gem</a> to save our emails to our app locally. First add the gem to your development environment and run the <code>bundle</code> command to install it.</p>
+<p>You may have noticed that your email did not send ... oh dear. In order to remedy this and demonstrate the email generation, we will use the <a href="https://github.com/ryanb/letter_opener">letter opener gem</a> to save our emails to our app locally. First add the gem to your development environment and run the <code>bundle</code> command to install it.</p>
 
 <div class="highlight highlight-ruby"><pre>   <span class="n">gem</span> <span class="s2">"letter_opener"</span>
 </pre></div>
@@ -86,7 +86,7 @@
 <h1>
 <span class="mega-icon mega-icon-issue-opened"></span> Stop</h1>
 
-<p>Show a TA that you have the email functionality set up and working as instructed and that the code is properly saved to git. Make sure the TA initials your sheet.</p>
+<p>Show a TA that you have the email functionality set up and working as instructed (email in your inbox or browser, either way is fine) and that the code is properly saved to git. Make sure the TA initials your sheet.</p>
 
 <hr>
 
@@ -98,7 +98,7 @@
 <div class="highlight highlight-ruby"><pre>  <span class="n">rails</span> <span class="n">generate</span> <span class="n">uploader</span> <span class="n">photo</span>
 </pre></div>
 
-<p>This creates a new directory within app called uploaders and a file within that called  'photo_uploader.rb' which will handle the logic of uploading a file.  Open that file and you will see there are a lot of options commented out for us.  We will leave most of these alone right now (feel free to experiment later), but there is one option we want to uncomment: the <code>extension_white_list</code>. (starts around line 38 or so) This will ensure that the files being uploaded are images; to allow any type of file to be uploaded is a huge security risk and checking the extension types is the least we can do to stop potential abuse of this functionality.</p>
+<p>This creates a new directory within app called uploaders and a file within that called  'photo_uploader.rb' which will handle the logic of uploading a file.  Open that file and you will see there are a lot of options commented out for us.  We will leave most of these alone right now (feel free to experiment later), but there is one option we want to uncomment: the <code>extension_whitelist</code>. (starts around line 38 or so) This will ensure that the files being uploaded are images; to allow any type of file to be uploaded is a huge security risk and checking the extension types is the least we can do to stop potential abuse of this functionality.</p>
 </li>
 <li>
 <p>The uploader file will not be of much value unless we explicitly connect it to the Friends model and alter the database to record the file path.  First, go into the Friend model and add near the top of the Friend class the following:</p>
@@ -118,8 +118,8 @@
 <p>Now we have to go into the friend form partial and add a field that will allow a user to upload the image.  To start, at the top of the form after the <code>form_for @friend ...</code>  and before the <code>do ...</code>, add <code>:html =&gt; { :multipart =&gt; true }</code> so that the form is capable of receiving attachments (place a comma after <code>@friend</code> and get rid of any parentheses or it will produce an error).  Then go do into the form itself and add the following:</p>
 
 <div class="highlight highlight-erb"><pre><span class="x">  &lt;div class="field"&gt;</span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:photo</span> <span class="cp">%&gt;</span><span class="x">&lt;br /&gt;</span>
-<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">file_field</span> <span class="ss">:photo</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">label</span> <span class="ss">:photo</span> <span class="cp">%&gt;</span><span class="x">&lt;br /&gt;</span>
+<span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">file_field</span> <span class="ss">:photo</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  &lt;/div&gt;</span>
 </pre></div>
 

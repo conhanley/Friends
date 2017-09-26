@@ -9,6 +9,6 @@ class Friend < ApplicationRecord
   validates_inclusion_of :level, in: [1,2,3,4], message: "level not recognized by the system"
   
   # Uploaders
-  #mount_uploader :photo, PhotoUploader
+  mount_uploader :photo, PhotoUploader
 	
 end
